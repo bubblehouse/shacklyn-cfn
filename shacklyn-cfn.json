@@ -68,6 +68,29 @@
                     "SecondaryPublicCidr": "10.0.5.0/24"
                 }
             }
+        },
+        
+        "hubLegacyWeb" : {
+            "Type" : "AWS::CloudFormation::Stack",
+            "Properties" : {
+                "TemplateURL" : "https://s3.amazonaws.com/cf.shacklyn.net/shacklyn-asg-cfn.json",
+                "Parameters" : {
+                    "AvailabiltyZoneIds": "us-east-1d",
+                    "BaseInstanceTag": "hub-legacyweb",
+                    "InstanceType": "t2.micro",
+                    "KeyPairName": { "Ref" : "DefaultKeyPair" },
+                    "PuppetEnvironment": "hub",
+                    "SecurityGroupIds": { "Ref" : "natSg" },
+                    "SelectedImageId": "ami-864d84ee",
+                    "EC2SubnetIds": { "Fn::GetAtt" : ["hub", "managementPublicSubnet"] },
+                    "NumInstances": "1",
+                    "EndpointDNSName": { "Fn::Join" : ["-", ["nat", { "Ref" : "BaseName" }] ]},
+                    "EndpointZone": { "Ref" : "DhcpDomainName" },
+                    "StaticVolumeTag": "legacy-web-static",
+                    "StaticVolumeSize": 8,
+                    "StaticVolumeEncryption": false
+                }
+            }
         }
     }
 }

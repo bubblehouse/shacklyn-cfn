@@ -65,7 +65,7 @@
             "Type": "Number"
         },
         "ConfigureAsGateway" : {
-            "Default": "true",
+            "Default": "false",
             "AllowedValues" : ["true", "false"],
             "ConstraintDescription" : "You must specify true or false.",
             "Description": "Should this instance be configured as a NAT/PAT gateway?",
