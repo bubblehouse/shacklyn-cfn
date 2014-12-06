@@ -46,7 +46,7 @@
         "hub" : {
             "Type" : "AWS::CloudFormation::Stack",
             "Properties" : {
-                "TemplateURL" : "https://s3.amazonaws.com/cf.shacklyn.net/shacklyn-net-cfn.json",
+                "TemplateURL" : "https://s3.amazonaws.com/cf.shacklyn.net/shacklyn-hub-cfn.json",
                 "Parameters" : {
                     "BaseName": "hub",
                     "BaseNetwork": "10.0.0.0/16",
@@ -56,7 +56,7 @@
                     "DhcpNtp": { "Ref" : "DhcpNtp" },
                     "DhcpNetbios": { "Ref" : "DhcpNetbios" },
                     "GatewayAccessCidr": { "Ref" : "GatewayAccessCidr" },
-                    "GatewayKeyPair": { "Ref" : "DefaultKeyPair" },
+                    "DefaultKeyPair": { "Ref" : "DefaultKeyPair" },
                     "ManagementAZ": "a",
                     "ManagementPrivateCidr": "10.0.0.0/24",
                     "ManagementPublicCidr": "10.0.1.0/24",
@@ -66,29 +66,6 @@
                     "SecondaryAZ": "e",
                     "SecondaryPrivateCidr": "10.0.4.0/24",
                     "SecondaryPublicCidr": "10.0.5.0/24"
-                }
-            }
-        },
-        
-        "hubLegacyWeb" : {
-            "Type" : "AWS::CloudFormation::Stack",
-            "Properties" : {
-                "TemplateURL" : "https://s3.amazonaws.com/cf.shacklyn.net/shacklyn-asg-cfn.json",
-                "Parameters" : {
-                    "AvailabiltyZoneIds": "us-east-1d",
-                    "BaseInstanceTag": "hub-legacyweb",
-                    "InstanceType": "t2.micro",
-                    "KeyPairName": { "Ref" : "DefaultKeyPair" },
-                    "PuppetEnvironment": "hub",
-                    "SecurityGroupIds": { "Ref" : "natSg" },
-                    "SelectedImageId": "ami-864d84ee",
-                    "EC2SubnetIds": { "Fn::GetAtt" : ["hub", "managementPublicSubnet"] },
-                    "NumInstances": "1",
-                    "EndpointDNSName": { "Fn::Join" : ["-", ["nat", { "Ref" : "BaseName" }] ]},
-                    "EndpointZone": { "Ref" : "DhcpDomainName" },
-                    "StaticVolumeTag": "legacy-web-static",
-                    "StaticVolumeSize": 8,
-                    "StaticVolumeEncryption": false
                 }
             }
         }
