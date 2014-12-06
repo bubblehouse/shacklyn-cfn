@@ -154,7 +154,7 @@
                     "NatCidrRange": { "Ref" : "BaseNetwork" },
                     "PuppetEnvironment": { "Ref" : "BaseName"},
                     "EndpointZone": { "Ref" : "DhcpDomainName" },
-                    "KeyPairName": { "Ref" : "DefaultKeyPair" },
+                    "KeyPairName": { "Ref" : "GatewayKeyPair" },
                     "SecurityGroupIds": { "Ref" : "natSg" },
                     "EC2SubnetIds": { "Ref" : "managementPublicSubnet" }
                 }
