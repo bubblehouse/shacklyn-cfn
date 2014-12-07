@@ -140,6 +140,7 @@
         },
         "eipRecordSetGroup" : {
             "Type" : "AWS::Route53::RecordSetGroup",
+            "Condition": "NeedsPublicAddress",
             "DependsOn": ["autoScaleGroup"],
             "Properties" : {
                 "HostedZoneName" : { "Fn::Join" : ["", [{ "Ref" : "EndpointZone"}, "."]] },
@@ -444,7 +445,9 @@
                         " - cd /etc/puppet",
                         " - bundle install",
                         " - echo n | librarian-puppet init",
-                        " - USER=root HOME=/root/ librarian-puppet install --path=/etc/puppet/bootstrap-modules",
+                        " - export USER=root",
+                        " - export HOME=/root/",
+                        " - librarian-puppet install --path=/etc/puppet/bootstrap-modules",
                         " - puppet apply --debug --color=false --modulepath=/etc/puppet/bootstrap-modules --execute 'include aws::bootstrap'"
                     ]] }
                 }

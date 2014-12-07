@@ -1,0 +1,217 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+
+    "Description": "Shacklyn network stack",
+
+    "Parameters": {
+        "BaseName": {
+            "Description": "The base name for this network.",
+            "Type": "String"
+        },
+        "BaseNetwork": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "This network's CIDR block.",
+            "Type": "String"
+        },
+        "DhcpDomainName": {
+            "Description": "The domain to configure for this network.",
+            "Type": "String"
+        },
+        "DhcpNs1": {
+            "Description": "The primary nameserver for this network.",
+            "Type": "String"
+        },
+        "DhcpNs2": {
+            "Description": "The secondary nameserver for this network.",
+            "Type": "String"
+        },
+        "DhcpNtp": {
+            "Description": "The NTP server for this network.",
+            "Type": "String"
+        },
+        "DhcpNetbios": {
+            "Description": "The Netbios server for this network.",
+            "Type": "String"
+        },
+        "GatewayAccessCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "Limit SSH access to the NAT gateway to this CIDR block.",
+            "Type": "String"
+        },
+        "DefaultKeyPair": {
+            "Description": "The keypair to use for the NAT instance.",
+            "Type": "String"
+        },
+        "ManagementAZ": {
+            "AllowedValues": [ "a", "b", "c", "d", "e" ],
+            "Description": "AZ for management and deploy tools only.",
+            "Type": "String"
+        },
+        "ManagementPrivateCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "CIDR block for the PRIVATE management network.",
+            "Type": "String"
+        },
+        "ManagementPublicCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "CIDR block for the PUBLIC management network.",
+            "Type": "String"
+        },
+        "PrimaryAZ": {
+            "AllowedValues": [ "a", "b", "c", "d", "e" ],
+            "Description": "AZ for redundant services.",
+            "Type": "String"
+        },
+        "PrimaryPrivateCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "CIDR block for the PRIVATE primary network.",
+            "Type": "String"
+        },
+        "PrimaryPublicCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "CIDR block for the PUBLIC primary network.",
+            "Type": "String"
+        },
+        "SecondaryAZ": {
+            "AllowedValues": [ "a", "b", "c", "d", "e" ],
+            "Description": "AZ for redundant services.",
+            "Type": "String"
+        },
+        "SecondaryPrivateCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "CIDR block for the PRIVATE secondary network.",
+            "Type": "String"
+        },
+        "SecondaryPublicCidr": {
+            "AllowedPattern": "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}/\\d{1,2}",
+            "ConstraintDescription": "That doesn't look like a CIDR block.",
+            "Description": "CIDR block for the PUBLIC secondary network.",
+            "Type": "String"
+        }
+    },
+
+    "Resources": {
+        "net" : {
+            "Type" : "AWS::CloudFormation::Stack",
+            "Properties" : {
+                "TemplateURL" : "https://s3.amazonaws.com/cf.shacklyn.net/shacklyn-net-cfn.json",
+                "Parameters" : {
+                    "BaseName": { "Ref" : "BaseName" },
+                    "BaseNetwork": { "Ref" : "BaseNetwork" },
+                    "DhcpDomainName": { "Ref" : "DhcpDomainName" },
+                    "DhcpNs1": { "Ref" : "DhcpNs1" },
+                    "DhcpNs2": { "Ref" : "DhcpNs2" },
+                    "DhcpNtp": { "Ref" : "DhcpNtp" },
+                    "DhcpNetbios": { "Ref" : "DhcpNetbios" },
+                    "GatewayAccessCidr": { "Ref" : "GatewayAccessCidr" },
+                    "GatewayKeyPair": { "Ref" : "DefaultKeyPair" },
+                    "ManagementAZ": { "Ref" : "ManagementAZ" },
+                    "ManagementPrivateCidr": { "Ref" : "ManagementPrivateCidr" },
+                    "ManagementPublicCidr": { "Ref" : "ManagementPublicCidr" },
+                    "PrimaryAZ": { "Ref" : "PrimaryAZ" },
+                    "PrimaryPrivateCidr": { "Ref" : "PrimaryPrivateCidr" },
+                    "PrimaryPublicCidr": { "Ref" : "PrimaryPublicCidr" },
+                    "SecondaryAZ": { "Ref" : "SecondaryAZ" },
+                    "SecondaryPrivateCidr": { "Ref" : "SecondaryPrivateCidr" },
+                    "SecondaryPublicCidr": { "Ref" : "SecondaryPublicCidr" }
+                }
+            }
+        },
+
+        "legacy" : {
+            "Type" : "AWS::CloudFormation::Stack",
+            "DependsOn": ["net"],
+            "Properties" : {
+                "TemplateURL" : "https://s3.amazonaws.com/cf.shacklyn.net/shacklyn-asg-cfn.json",
+                "Parameters" : {
+                    "AvailabiltyZoneIds": { "Fn::Join" : [",", [
+                        { "Fn::Join" : ["", [{ "Ref" : "AWS::Region" }, { "Ref" : "PrimaryAZ" }] ]},
+                        { "Fn::Join" : ["", [{ "Ref" : "AWS::Region" }, { "Ref" : "SecondaryAZ" }] ]}
+                    ]] },
+                    "BaseInstanceTag": { "Fn::Join" : ["-", [{ "Ref" : "BaseName" }, "legacy"] ]},
+                    "EndpointDNSName": { "Fn::Join" : ["-", [{ "Ref" : "BaseName" }, "legacy"] ]},
+                    "RootVolumeSize": 8,
+                    "StaticVolumeSize": 8,
+                    "StaticVolumeEncryption": false,
+                    "InstanceType": "t2.micro",
+                    "SelectedImageId": "ami-864d84ee",
+                    "NumInstances": "1",
+                    "PuppetEnvironment": { "Ref" : "BaseName"},
+                    "EndpointZone": { "Ref" : "DhcpDomainName" },
+                    "KeyPairName": { "Ref" : "DefaultKeyPair" },
+                    "SecurityGroupIds": { "Ref" : "webEc2Sg" },
+                    "EC2SubnetIds": { "Fn::Join" : [",", [
+                        { "Fn::GetAtt" : ["net", "Outputs.primaryPrivateSubnetId"] },
+                        { "Fn::GetAtt" : ["net", "Outputs.secondaryPrivateSubnetId"] }
+                    ]]},
+                    "ELBSecurityGroupIds": { "Ref" : "webElbSg" },
+                    "ELBSubnetIds": { "Fn::Join" : [",", [
+                        { "Fn::GetAtt" : ["net", "Outputs.primaryPublicSubnetId"] },
+                        { "Fn::GetAtt" : ["net", "Outputs.secondaryPublicSubnetId"] }
+                    ]]}
+                }
+            }
+        },
+
+        "webEc2Sg": {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : { "Fn::Join" : [ " ", [
+                    "[cfn] Common access rules for a web server EC2 instance"
+                ]] },
+                "Tags" :  [{
+                    "Key": "Name",
+                    "Value": "hub-web-ec2"
+                }],
+                "VpcId" : {"Fn::GetAtt" : [ "net", "Outputs.vpcId" ]},
+                "SecurityGroupIngress" : [{
+                    "SourceSecurityGroupId" : { "Ref" : "webElbSg" },
+                    "IpProtocol" : 6,
+                    "FromPort" : 80,
+                    "ToPort" : 80
+                }, {
+                    "SourceSecurityGroupId" : { "Ref" : "webElbSg" },
+                    "IpProtocol" : 6,
+                    "FromPort" : 443,
+                    "ToPort" : 443
+                }, {
+                    "SourceSecurityGroupId": {"Fn::GetAtt" : [ "net", "Outputs.natSecurityGroupId" ]},
+                    "IpProtocol": 6,
+                    "FromPort": 22,
+                    "ToPort": 22
+                }]
+            }
+        },
+        "webElbSg": {
+            "Type" : "AWS::EC2::SecurityGroup",
+            "Properties" : {
+                "GroupDescription" : { "Fn::Join" : [ " ", [
+                    "[cfn] Common ccess rules for a web ELB instance"
+                ]] },
+                "Tags" :  [{
+                    "Key": "Name",
+                    "Value": "hub-web-elb"
+                }],
+                "VpcId" : {"Fn::GetAtt" : [ "net", "Outputs.vpcId" ]},
+                "SecurityGroupIngress" : [{
+                    "CidrIp" : "0.0.0.0/0",
+                    "IpProtocol" : 6,
+                    "FromPort" : 80,
+                    "ToPort" : 80
+                }, {
+                    "CidrIp" : "0.0.0.0/0",
+                    "IpProtocol" : 6,
+                    "FromPort" : 443,
+                    "ToPort" : 443
+                }]
+            }
+        }
+    }
+}
