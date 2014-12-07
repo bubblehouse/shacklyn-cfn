@@ -1,7 +1,7 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
 
-    "Description": "Shacklyn network stack",
+    "Description": "Shacklyn environment stack",
 
     "Parameters": {
         "BaseName": {
