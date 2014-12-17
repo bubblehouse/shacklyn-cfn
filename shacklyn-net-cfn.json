@@ -111,7 +111,7 @@
             "Description" : "Security group for NAT gateway"
         },
         "managementPrivateSubnetId" : {
-            "Value" : { "Ref" : "managementPublicSubnet" },
+            "Value" : { "Ref" : "managementPrivateSubnet" },
             "Description" : "Management private subnet ID"
         },
         "managementPublicSubnetId" : {
