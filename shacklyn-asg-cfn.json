@@ -32,6 +32,21 @@
             "Description": "Puppet environment to add the new server to.",
             "Type": "String"
         },
+        "PuppetBootstrapModuleURL": {
+            "Default": "https://github.com/bubblehouse/puppet-aws.git",
+            "Description": "Base Puppet module git repo.",
+            "Type": "String"
+        },
+        "PuppetBootstrapModuleShortName": {
+            "Default": "aws",
+            "Description": "Base Puppet module git repo.",
+            "Type": "String"
+        },
+        "PuppetBootstrapClass": {
+            "Default": "aws::bootstrap",
+            "Description": "Base Puppet bootstrap class.",
+            "Type": "String"
+        },
         "SecurityGroupIds": {
             "Description": "Comma-separated list of security group IDs for the created instances.",
             "Type": "CommaDelimitedList"
@@ -249,6 +264,7 @@
                             "Effect": "Allow",
                             "Action": [
                                 "cloudwatch:*",
+                                "logs:*",
                                 "ec2:ModifyInstanceAttribute",
                                 "ec2:AttachNetworkInterface",
                                 "ec2:AssociateAddress",
@@ -416,8 +432,8 @@
                         "   content: |",
                         "     forge 'https://forgeapi.puppetlabs.com'",
                         "     ",
-                        "     mod 'bubblehouse-aws',",
-                        "       :git => 'https://github.com/bubblehouse/puppet-aws.git'",
+   { "Fn::Join" : ["", ["     mod 'bootstrap-", { "Ref":"PuppetBootstrapModuleShortName" }, "',"]]},
+   { "Fn::Join" : ["", ["       :git => '", { "Ref":"PuppetBootstrapModuleURL"}, "'"]]},
                         " - path: /etc/puppet/hiera.yaml",
                         "   content: |",
                         "     ---",
@@ -441,11 +457,11 @@
                         "runcmd:",
                         " - cd /etc/puppet",
                         " - bundle install",
-                        " - echo n | librarian-puppet init",
                         " - export USER=root",
                         " - export HOME=/root/",
+                        " - echo n | librarian-puppet init",
                         " - librarian-puppet install --path=/etc/puppet/bootstrap-modules",
-                        " - puppet apply --debug --color=false --modulepath=/etc/puppet/bootstrap-modules --execute 'include aws::bootstrap'"
+   { "Fn::Join" : ["", [" - puppet apply --debug --color=false --modulepath=/etc/puppet/bootstrap-modules --execute 'include ", { "Ref" : "PuppetBootstrapClass"}, "'"]]}
                     ]] }
                 }
             }
